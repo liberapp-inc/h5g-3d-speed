@@ -11,11 +11,11 @@ class Player extends GameObject{
     set y( y:number ){ this.display.y = y; }
 
     radius:number;
-    z:number;
-    vz:number;
-    buttonOffsetX:number;
+    z:number = 0;
+    vz:number = 0;
+    buttonOffsetX:number = 0;
 
-    button:Button;
+    button:Button = null;
     state:()=>void = this.stateNone;
 
     constructor() {
@@ -27,7 +27,6 @@ class Player extends GameObject{
         let y = Util.h(0.5) + Util.w(0.3);
         
         this.radius = Util.w(PLAYER_RADIUS_PER_W);
-        this.z = 0;
         this.vz = Util.w(PLAYER_SPEED_Z_PER_W);
 
         this.setDisplay( x, y );
@@ -44,6 +43,7 @@ class Player extends GameObject{
         if( this.display == null ){
             this.display = shape = new egret.Shape();
             GameObject.gameDisplay.addChild(this.display);
+            // GameObject.gameDisplay.addChildAt(this.display, 2);
         }else
             shape.graphics.clear();
 
@@ -80,9 +80,10 @@ class Player extends GameObject{
         }
 
         // progress z
-        const maxSpeed = Util.w(PLAYER_SPEED_Z_PER_W);
-        const delta = maxSpeed / 60;
-        this.vz += Util.clamp( maxSpeed - this.vz, -delta, +delta );
+        // const maxSpeed = Util.w(PLAYER_SPEED_Z_PER_W);
+        // const delta = maxSpeed / 60;
+        // this.vz += Util.clamp( maxSpeed - this.vz, -delta, +delta );
+            this.vz = Util.w(PLAYER_SPEED_Z_PER_W);
         this.z += this.vz;
     }
 

@@ -1,4 +1,4 @@
-// 3D test
+// 3D speed ball
 // Liberapp 2019 - Tahiti Katagai
 
 class Main extends eui.UILayer {

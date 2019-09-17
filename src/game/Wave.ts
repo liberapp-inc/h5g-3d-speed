@@ -3,7 +3,6 @@
 
 class Wave extends GameObject{
 
-    mileage:number=0;
     milestone:number=0;
 
     constructor() {
@@ -16,16 +15,14 @@ class Wave extends GameObject{
             return;
         }
 
-        Game.speed = Util.lerp( Util.w(1/150), Util.w(1/60), Game.hard );
-        Game.hard = Util.clamp( this.mileage / Util.w( 50 ), 0, 1 );
+        Game.speed = Util.lerp( Util.w(PLAYER_SPEED_Z_PER_W), Util.w(PLAYER_SPEED_Z_PER_W), Game.hard );
+        Game.hard = Util.clamp( Player.I.z / Util.w( 50 ), 0, 1 );
 
-        this.mileage += Game.speed;
-        
-        if( this.milestone <= this.mileage ){
+        if( this.milestone <= Player.I.z ){
             this.milestone += Util.w(0.5);
             Score.I.addPoint();
             
-            new Ball3D(  );
+            new Ball3D( randF( 0, Util.w(1) ), Util.h(0.5) + Util.w(0.3), Player.I.z + Util.w(4) );
         }
     }
 }

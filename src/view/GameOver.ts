@@ -11,7 +11,7 @@ class GameOver extends GameObject{
 
     static Create():GameOver{
         if( GameOver.I == null ){
-            Player.players.forEach( p2 => { p2.setStateMiss(); } );
+            Player.I.setStateMiss();
             new GameOver();
         }
         return GameOver.I;
