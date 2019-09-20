@@ -1,85 +1,70 @@
 // Liberapp 2019 - Tahiti Katagai
-// 3Dボール
+// 3Dボール表示
 
-class Ball3D extends GameObject{
+const SHADOW_SY = 0.5;
+const SHADOW_1_SY = 1/SHADOW_SY;
 
-    x:number;
-    y:number;
-    z:number;
-    radius:number;
-    step:number = 0;
+class Ball3D {
 
-    constructor( x:number, y:number, z:number ) {
-        super();
+    sphere:egret.Shape = null;
+    shadow:egret.Shape = null;
 
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.radius = Util.w( LANE_RADIUS_PER_W );
-        this.setDisplay( x, y );
-        this.update();
+    constructor( x:number, y:number, z:number, radius:number, color:number ) {
+
+        this.setDisplay( x, y, radius, color );
     }
 
-    setDisplay( x:number, y:number ){
-        let shape:egret.Shape = this.display as egret.Shape;
-        if( this.display == null ){
-            this.display = shape = new egret.Shape();
-            GameObject.gameDisplay.addChildAt(this.display, 0 );
-            // GameObject.gameDisplay.addChild(this.display);
-        }else
-            shape.graphics.clear();
-
-        shape.x = x;
-        shape.y = y;
-        shape.graphics.beginFill( OBSTACLE_COLOR );
-        shape.graphics.drawCircle( 0, 0, this.radius );
-        shape.graphics.endFill();
-        shape.alpha = 1/60;
-    }
-
-    update() {
-
-        let shape:egret.Shape = this.display as egret.Shape;
-        if( shape.alpha < 1 ){
-            shape.alpha = shape.alpha + 1/60;
+    destroy(){
+        if( this.sphere ){
+            this.sphere.parent.removeChild(this.sphere);
+            this.sphere = null;
+            this.shadow.parent.removeChild(this.shadow);
+            this.shadow = null;
         }
+    }
 
-        let z = this.z - Player.I.z;
+    setDisplay( x:number, y:number, radius:number, color:number ){
+        this.sphere = new egret.Shape();
+        this.shadow = new egret.Shape();
+        GameObject.gameDisplay.addChildAt(this.sphere, 0 );
+        GameObject.gameDisplay.addChildAt(this.shadow, 0 );
+
+        this.sphere.graphics.beginFill( color );
+        this.sphere.graphics.drawCircle( 0, 0, radius );
+        this.sphere.graphics.endFill();
+
+        this.shadow.graphics.beginFill( SHADOW_COLOR );
+        this.shadow.graphics.drawCircle( 0, radius*SHADOW_1_SY, radius );
+        this.shadow.graphics.endFill();
+    }
+
+    setAlpha( alpha:number ){
+        this.sphere.alpha =
+        this.shadow.alpha = alpha;
+    }
+
+    setShapeFront(){
+        this.shadow.parent.removeChild(this.shadow);
+        this.sphere.parent.removeChild(this.sphere);
+        GameObject.gameDisplay.addChild(this.shadow);
+        GameObject.gameDisplay.addChild(this.sphere);
+    }
+
+    perspective( x:number, y:number, z:number ){
         z = z / Util.w(0.25);
-
-        if( this.step == 0 ){
-            if( z > 1 ){
-                this.perspective( z );
-            }
-            else{
-                this.step = 1;
-                // hit 
-                let dx = Player.I.x - this.x;
-                let dy = Player.I.y - this.y;
-                if( dx**2+dy**2 < this.radius**2+Player.I.radius**2 ){
-                    Player.I.setStateMiss();
-                    // Todo effect
-                }
-                this.display.parent.removeChild(this.display);
-                GameObject.gameDisplay.addChild(this.display);
-            }
-        }
-        else{
-            this.perspective( z );
-            if( z <= 0 ){
-                this.destroy();
-            }
-        }
-    }
-
-    perspective( z:number ){
-        let x = this.x - Util.w(0.5);
-        let y = this.y - Util.h(0.3);
-        
         const rpcZ = 1/z;
-        this.display.x = Util.w(0.5) + x * rpcZ;
-        this.display.y = Util.h(0.3) + y * rpcZ;
-        this.display.scaleX =
-        this.display.scaleY = rpcZ;
+        x = x - Util.w(0.5);
+        y = y - Util.h(0.3);
+        x = Util.w(0.5) + x * rpcZ;
+        y = Util.h(0.3) + y * rpcZ;
+        this.sphere.x = x;
+        this.sphere.y = y;
+        this.sphere.scaleX =
+        this.sphere.scaleY = rpcZ;
+
+        this.shadow.x = x;
+        this.shadow.y = y;
+        this.shadow.scaleX = rpcZ;
+        this.shadow.scaleY = rpcZ * SHADOW_SY;
     }
 }

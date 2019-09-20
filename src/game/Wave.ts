@@ -15,14 +15,24 @@ class Wave extends GameObject{
             return;
         }
 
-        Game.speed = Util.lerp( Util.w(PLAYER_SPEED_Z_PER_W), Util.w(PLAYER_SPEED_Z_PER_W), Game.hard );
+        Game.speed = Util.lerp( PLAYER_SPEED_Z_PER_W, PLAYER_MAX_SPEED_Z_PER_W, Game.hard ) * Util.width;
         Game.hard = Util.clamp( Player.I.z / Util.w( 50 ), 0, 1 );
 
         if( this.milestone <= Player.I.z ){
-            this.milestone += Util.w(0.5);
+            this.milestone += Util.lerp( 1.0, 0.5, Game.hard ) * Util.width;
             Score.I.addPoint();
             
-            new Ball3D( randF( 0, Util.w(1) ), Util.h(0.5) + Util.w(0.3), Player.I.z + Util.w(4) );
+            const maxLane = Math.floor( LANES/2 );
+            const minLane = -maxLane;
+
+            const lane = randI( minLane, maxLane+1 );
+            new Obstacle( Util.w(0.5) + lane*Util.w(LANE_WIDTH_PER_W), Util.h(0.5) + Util.w(0.3), Player.I.z + Util.w(4) );
+
+            if( randBool( Util.lerp( 0.1, 0.5, Game.hard ) ) ){ 
+            const lane2 = randI( minLane, maxLane+1 );
+            if( lane2 != lane )
+                new Obstacle( Util.w(0.5) + lane2*Util.w(LANE_WIDTH_PER_W), Util.h(0.5) + Util.w(0.3), Player.I.z + Util.w(4) );
+            }
         }
     }
 }

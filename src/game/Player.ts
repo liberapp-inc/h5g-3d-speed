@@ -5,14 +5,17 @@ class Player extends GameObject{
 
     static I:Player = null;
 
-    get x():number { return this.display.x; }
-    get y():number { return this.display.y; }
-    set x( x:number ){ this.display.x = x; }
-    set y( y:number ){ this.display.y = y; }
+    // get x():number { return this.display.x; }
+    // get y():number { return this.display.y; }
+    // set x( x:number ){ this.display.x = x; }
+    // set y( y:number ){ this.display.y = y; }
 
-    radius:number;
-    z:number = 0;
+    x:number;
+    y:number;
+    z:number;
     vz:number = 0;
+    radius:number;
+    ball3d:Ball3D = null;
     buttonOffsetX:number = 0;
 
     button:Button = null;
@@ -23,39 +26,24 @@ class Player extends GameObject{
 
         Player.I = this;
         
-        let x = Util.w(0.5);
-        let y = Util.h(0.5) + Util.w(0.3);
-        
-        this.radius = Util.w(PLAYER_RADIUS_PER_W);
+        this.x = Util.w(0.5);
+        this.y = Util.h(0.5) + Util.w(0.3);
+        this.z = 0;
         this.vz = Util.w(PLAYER_SPEED_Z_PER_W);
-
-        this.setDisplay( x, y );
+        this.radius = Util.w(PLAYER_RADIUS_PER_W);
+        this.ball3d = new Ball3D( this.x, this.y, this.z, this.radius, PLAYER_COLOR );
         this.button = new Button( null, 0, 0, 0.5, 0.5, 1, 1, 0x000000, 0.0, null ); // 透明な全画面ボタン
     }
 
     onDestroy(){
+        this.ball3d.destroy();
         this.button.destroy();
         Player.I = null;
     }
 
-    setDisplay( x:number, y:number ){
-        let shape:egret.Shape = this.display as egret.Shape;
-        if( this.display == null ){
-            this.display = shape = new egret.Shape();
-            GameObject.gameDisplay.addChild(this.display);
-            // GameObject.gameDisplay.addChildAt(this.display, 2);
-        }else
-            shape.graphics.clear();
-
-        shape.x = x;
-        shape.y = y;
-        shape.graphics.beginFill( PLAYER_COLOR );
-        shape.graphics.drawCircle( 0, 0, this.radius );
-        shape.graphics.endFill();
-    }
-
     update(){
         this.state();
+        this.ball3d.perspective( this.x, this.y, Util.w(0.25) );
     }
 
     setStateNone(){
@@ -80,10 +68,6 @@ class Player extends GameObject{
         }
 
         // progress z
-        // const maxSpeed = Util.w(PLAYER_SPEED_Z_PER_W);
-        // const delta = maxSpeed / 60;
-        // this.vz += Util.clamp( maxSpeed - this.vz, -delta, +delta );
-            this.vz = Util.w(PLAYER_SPEED_Z_PER_W);
         this.z += this.vz;
     }
 
@@ -92,6 +76,8 @@ class Player extends GameObject{
             return;
         new GameOver();
         this.state = this.stateMiss;
+        new EffectCircle( this.x, this.y, this.radius, PLAYER_COLOR );
+        EffectLine.create( this.x, this.y, this.radius, PLAYER_COLOR, 8 );
     }
     stateMiss(){
     }

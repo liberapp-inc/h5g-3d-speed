@@ -1,18 +1,22 @@
 // Liberapp 2019 - Tahiti Katagai
 // ゲームシーン
 
+const ROAD_WIDTH_PER_W = 1;
+const LANES = 5;
+const LANE_WIDTH_PER_W = 1/LANES;
+const PLAYER_RADIUS_PER_W = LANE_WIDTH_PER_W/2 * 0.9;
+const OBSTACLE_RADIUS_PER_W = PLAYER_RADIUS_PER_W;
 const PLAYER_SPEED_Z_PER_W = 1/30;
-const PLAYER_RADIUS_PER_W = 1/10;
-const LANE_RADIUS_PER_W = PLAYER_RADIUS_PER_W;
-const LANE_WIDTH_PER_W = LANE_RADIUS_PER_W * 2;
-
+const PLAYER_MAX_SPEED_Z_PER_W = 1/20;
+const CAMERA_Z_OFFSET_PER_W = 0.25;
 const SAVE_KEY_BESTSCORE = "speedball-bestScore";
 
-const BACK_COLOR = 0xffffff;    // index.htmlで設定
-const FONT_COLOR = 0x505050;
-const PLAYER_COLOR = 0x74a4af;
-const OBSTACLE_COLOR = 0xe00000;
-const LANE_COLOR = 0xe0e0e0; //0x9a9a9a;//0x74a4af;
+const BACK_COLOR = 0x000000;    // index.htmlで設定
+const FONT_COLOR = 0xc0c4d0;
+const PLAYER_COLOR = 0xff00b0;
+const OBSTACLE_COLOR = 0x0090f0;
+const SHADOW_COLOR = 0xf0f0ff;
+const LANE_COLOR = 0xe0e0e0;
 
 class Game {
 
@@ -21,6 +25,7 @@ class Game {
         Game.speed = 0;
         Game.hard = 0;
         
+        new DrawRoad();
         new Player();
         new Wave();
 
