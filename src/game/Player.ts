@@ -43,7 +43,7 @@ class Player extends GameObject{
 
     update(){
         this.state();
-        this.ball3d.perspective( this.x, this.y, Util.w(0.25) );
+        this.ball3d.perspective( this.x, this.y, 0 );
     }
 
     setStateNone(){

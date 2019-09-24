@@ -51,6 +51,7 @@ class Ball3D {
     }
 
     perspective( x:number, y:number, z:number ){
+        z = z + Util.w(0.25);
         z = z / Util.w(0.25);
         const rpcZ = 1/z;
         x = x - Util.w(0.5);
@@ -62,6 +63,9 @@ class Ball3D {
         this.sphere.scaleX =
         this.sphere.scaleY = rpcZ;
 
+        // shadow on the floor
+        y = Util.h(0.5 - 0.3) + Util.w(0.3);
+        y = Util.h(0.3) + y * rpcZ;
         this.shadow.x = x;
         this.shadow.y = y;
         this.shadow.scaleX = rpcZ;
