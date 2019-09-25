@@ -1,7 +1,7 @@
 # 3Dスピード
 疑似３D表現のスピードランゲーム
 
-<開発中>
+<https://liberapp.net/applications/0c5ade80-df6a-11e9-96eb-1dacf12b6b13>
 
 ## ビルド方法
 
