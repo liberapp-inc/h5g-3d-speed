@@ -5,12 +5,8 @@ enum ObsType{
     Fixed,
     SlideR,
     SlideL,
-    // SlideF,
-    // SlideB,
     JumpUp,
     JumpOn,
-    // Fast,
-    // Slow,
     Total
 }
 
@@ -66,16 +62,6 @@ class Obstacle extends GameObject{
                 x = x + Util.lerp( +Util.w(LANE_WIDTH_PER_W), 0, rate );
                 break;
             }
-            // case ObsType.SlideF: {
-            //     let rate = this.getSlideRate(z);
-            //     z = z + Util.lerp( +Util.w(LANE_WIDTH_PER_W), 0, rate );
-            //     break;
-            // }
-            // case ObsType.SlideB: {
-            //     let rate = this.getSlideRate(z);
-            //     z = z + Util.lerp( -Util.w(LANE_WIDTH_PER_W), 0, rate );
-            //     break;
-            // }
             case ObsType.JumpUp: {
                 let rate = Math.abs( Math.sin( ( z / Util.w(2) + 0.5 ) * Math.PI ) );
                 y = y - rate * Util.w(0.35);
@@ -86,14 +72,6 @@ class Obstacle extends GameObject{
                 y = y - rate * Util.w(0.35);
                 break;
             }
-            // case ObsType.Fast: {
-            //     z = z * 1.5;
-            //     break;
-            // }
-            // case ObsType.Slow: {
-            //     z = z * 0.6;
-            //     break;
-            // }
         }
         this.ball3d.perspective( x, y, z );
 
@@ -118,6 +96,6 @@ class Obstacle extends GameObject{
     }
 
     getSlideRate( z:number ):number{
-        return Util.clamp( -(z - Util.w(1.5)) / Util.w(0.7), 0, 1 );   // z1.5~0.8 to rate0~1
+        return Util.clamp( -(z - Util.w(1.5)) / Util.w(0.5), 0, 1 );   // z1.5~1.0 to rate0~1
     }
 }

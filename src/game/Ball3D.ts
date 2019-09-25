@@ -1,5 +1,5 @@
 // Liberapp 2019 - Tahiti Katagai
-// 3Dボール表示
+// 3Dボール表示クラス
 
 const SHADOW_SY = 0.5;
 const SHADOW_1_SY = 1/SHADOW_SY;
@@ -44,9 +44,7 @@ class Ball3D {
     }
 
     setShapeFront(){
-        this.shadow.parent.removeChild(this.shadow);
         this.sphere.parent.removeChild(this.sphere);
-        GameObject.gameDisplay.addChild(this.shadow);
         GameObject.gameDisplay.addChild(this.sphere);
     }
 
