@@ -30,7 +30,7 @@ class Obstacle extends GameObject{
         this.z = z;
         this.radius = Util.w( OBSTACLE_RADIUS_PER_W );
         this.ball3d = new Ball3D( x, y, z, this.radius, OBSTACLE_COLOR );
-        this.ball3d.setAlpha( 1/64 );
+        this.ball3d.setAlpha( 1/32 );
     }
 
     onDestroy(){
@@ -41,7 +41,7 @@ class Obstacle extends GameObject{
     update() {
         // alpha fade in
         if( this.ball3d.sphere.alpha < 1 ){
-            this.ball3d.setAlpha( this.ball3d.sphere.alpha + 1/64 );
+            this.ball3d.setAlpha( this.ball3d.sphere.alpha + 1/32 );
         }
 
         // move

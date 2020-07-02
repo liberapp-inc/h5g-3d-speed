@@ -15,14 +15,14 @@ class Wave extends GameObject{
             return;
         }
 
-        Game.hard = Util.clamp( Player.I.z / Util.w( 100 ), 0, 1 );
+        Game.hard = Util.clamp( Player.I.z / Util.w( 150 ), 0, 1 );
         Game.speed = Util.lerp( PLAYER_SPEED_Z_PER_W, PLAYER_MAX_SPEED_Z_PER_W, Game.hard ) * Util.width;
 
         if( this.milestone <= Player.I.z ){
             this.milestone += Util.lerp( 1.0, 0.5, Game.hard ) * Util.width;
             Score.I.addPoint();
             
-            if( randBool( Util.lerp( 1.0, 0.2, Game.hard ) ) ){
+            if( randBool( Util.lerp( 1.0, 0.4, Game.hard ) ) ){
                 // fixed obstacle
                 const maxLane = Math.floor( LANES/2 );
                 const minLane = -maxLane;
@@ -48,7 +48,7 @@ class Wave extends GameObject{
                     const y = Util.h(0.5) + Util.w(0.3);
                     const z = Player.I.z + Util.w(4);
 
-                    switch( randI(0,11+1) ){
+                    switch( randI(0,10+1) ){
                         case 0:
                         new Obstacle( ObsType.Fixed, xc + lane * xw, y, z ); lane++;
                         lane++;
@@ -137,13 +137,13 @@ class Wave extends GameObject{
                         new Obstacle( ObsType.JumpOn, xc + lane * xw, y, z ); lane++;
                         break;
 
-                        case 11:
-                        new Obstacle( ObsType.JumpUp, xc + lane * xw, y, z ); lane++;
-                        new Obstacle( ObsType.JumpOn, xc + lane * xw, y, z ); lane++;
-                        new Obstacle( ObsType.JumpUp, xc + lane * xw, y, z ); lane++;
-                        new Obstacle( ObsType.JumpOn, xc + lane * xw, y, z ); lane++;
-                        new Obstacle( ObsType.JumpUp, xc + lane * xw, y, z ); lane++;
-                        break;
+                        // case 11:
+                        // new Obstacle( ObsType.JumpUp, xc + lane * xw, y, z ); lane++;
+                        // new Obstacle( ObsType.JumpOn, xc + lane * xw, y, z ); lane++;
+                        // new Obstacle( ObsType.JumpUp, xc + lane * xw, y, z ); lane++;
+                        // new Obstacle( ObsType.JumpOn, xc + lane * xw, y, z ); lane++;
+                        // new Obstacle( ObsType.JumpUp, xc + lane * xw, y, z ); lane++;
+                        // break;
                     }
                 }
             }
